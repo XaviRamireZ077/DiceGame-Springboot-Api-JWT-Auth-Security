@@ -2,8 +2,6 @@ package S05T02DiceGameMongo.Model.Util;
 
 import S05T02DiceGameMongo.Model.Domain.Player;
 import S05T02DiceGameMongo.Model.Repository.PlayerRepository;
-import S05T02DiceGameMongo.Model.Util.JwtUserDetailsService;
-import S05T02DiceGameMongo.Model.Util.JwtTokenUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +26,10 @@ import java.util.Map;
 public class AuthController {
 
     protected final Log logger = LogFactory.getLog(getClass());
+
+    private static String error1 = "error";
+
+    private static String message = "message";
 
     @Autowired
     final PlayerRepository playerRepository;
@@ -56,28 +56,28 @@ public class AuthController {
                 logger.info("Logged In");
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
                 String token = jwtTokenUtil.generateToken(userDetails);
-                responseMap.put("error", false);
-                responseMap.put("message", "Logged In");
+                responseMap.put(error1, false);
+                responseMap.put(message, "Logged In");
                 responseMap.put("token", token);
                 return ResponseEntity.ok(responseMap);
             } else {
-                responseMap.put("error", true);
-                responseMap.put("message", "Invalid Credentials");
+                responseMap.put(error1, true);
+                responseMap.put(message, "Invalid Credentials");
                 return ResponseEntity.status(401).body(responseMap);
             }
         } catch (DisabledException e) {
             e.printStackTrace();
-            responseMap.put("error", true);
-            responseMap.put("message", "User is disabled");
+            responseMap.put(error1, true);
+            responseMap.put(message, "User is disabled");
             return ResponseEntity.status(500).body(responseMap);
         } catch (BadCredentialsException e) {
-            responseMap.put("error", true);
-            responseMap.put("message", "Invalid Credentials");
+            responseMap.put(error1, true);
+            responseMap.put(message, "Invalid Credentials");
             return ResponseEntity.status(401).body(responseMap);
         } catch (Exception e) {
             e.printStackTrace();
-            responseMap.put("error", true);
-            responseMap.put("message", "Something went wrong");
+            responseMap.put(error1, true);
+            responseMap.put(message, "Something went wrong");
             return ResponseEntity.status(500).body(responseMap);
         }
     }
@@ -96,9 +96,9 @@ public class AuthController {
         UserDetails userDetails = userDetailsService.createUserDetails(playerName, player.getPassword());
         String token = jwtTokenUtil.generateToken(userDetails);
         playerRepository.save(player);
-        responseMap.put("error", false);
+        responseMap.put(error1, false);
         responseMap.put("username", playerName);
-        responseMap.put("message", "Account created successfully");
+        responseMap.put(message, "Account created successfully");
         responseMap.put("token", token);
         return ResponseEntity.ok(responseMap);
     }

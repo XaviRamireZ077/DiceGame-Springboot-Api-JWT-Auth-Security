@@ -48,17 +48,17 @@ public class Player {
     }
 
     // METHODS
-
+    /*
     // Set player as Anonymous if no name given
     private String addName(String name) {
         if (name == null) {
             name = "Anonymous";
         }
         return name;
-    }
+    }*/
 
     public double getSuccessRateOfPlayers(List<DiceGame> diceRollsList) {
-        double successRate = 0;
+        double successRating = 0;
         if (diceRollsList != null && diceRollsList.size() > 0) {
             int gameListSize = diceRollsList.size();
             int totalWin = 0;
@@ -67,9 +67,9 @@ public class Player {
                     totalWin++;
                 }
             }
-            successRate = (totalWin * 100) / gameListSize;
+            successRating = (double) (totalWin * 100) / gameListSize;
         }
-        return successRate;
+        return successRating;
     }
 
 

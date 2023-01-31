@@ -14,9 +14,9 @@ import java.util.*;
 @Service
 public class DiceGameServiceImpl implements DiceGameService {
 
-    private static String ErrorMessage1 = "doesn't exist";
-    private static String ErrorMessage2 = "already exists";
-    private static String ErrorMessage3 = "Error: " ;
+    private static final String ErrorMessage1 = "doesn't exist";
+    private static final String ErrorMessage2 = "already exists";
+    private static final String ErrorMessage3 = "Error: " ;
 
 
     @Autowired
@@ -202,7 +202,7 @@ public class DiceGameServiceImpl implements DiceGameService {
     @Override
     public Map<String, Double> getPlayersRating() {
         List<Player> listAllPlayers = playerRepository.findAll();
-        Map<String, Double> mapPlayersRating = new HashMap<String, Double>();
+        Map<String, Double> mapPlayersRating = new HashMap<>();
 
         if(listAllPlayers != null && listAllPlayers.size() > 0){
             List<DiceGame> gamesOfActualPlayer;
